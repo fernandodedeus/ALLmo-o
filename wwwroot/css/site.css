@@ -214,3 +214,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+/* estilizar a mensagem de erro */
+.custom-alert {
+    background-color: rgba(220, 38, 38, 0.15);
+    border: 1px solid rgba(220, 38, 38, 0.4);
+    color: #f87171;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    font-weight: 500;
+}

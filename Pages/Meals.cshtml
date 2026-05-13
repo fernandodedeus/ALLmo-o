@@ -35,6 +35,17 @@
                 🍽️ Registrar refeição
             </h1>
 
+            <!-- METODO DE MOSTRAR NA TELA A MENSAGEM DE ERRO -->
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage)) 
+            {
+                <div class="alert custom-alert mb-4">
+
+                    @Model.ErrorMessage
+
+                </div>
+            }
+
             <form method="post">
 
                 <div class="mb-4">

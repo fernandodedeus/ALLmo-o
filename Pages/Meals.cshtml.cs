@@ -17,7 +17,9 @@ namespace ALLmoco.Pages
         [BindProperty]
         public MealCheck MealCheck { get; set; } = new();
         public List<MealCheck> MealHistory { get; set; } = new();
-        public int CurrentStreak { get; set; }
+        public int CurrentStreak { get; set; } // int para a streak
+        public string? ErrorMessage { get; set; } // string dentro da classe meal para criar a mensagem de erro no preenchimento de descricao
+        // string? significa “essa variável pode ser nula”, necessário para esse caso que pode ou nao existir mensagem
 
         public void OnGet()
         {
@@ -30,6 +32,19 @@ namespace ALLmoco.Pages
 
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
         {
+            if (!MealCheck.AteMeal)
+            {
+                ErrorMessage = "Marque a refeição antes de salvar.";
+
+                MealHistory = _context.MealChecks
+                    .OrderByDescending(x => x.Date)
+                    .ToList();
+
+                CalculateStreak();
+
+                return Page();
+            }
+
             MealCheck.Date = DateTime.Now;
             // metodo que verifica se existe refeição do tipo selecionado, se existir ele não vai salvar a refeição, alem de que ele verifica se a ref foi marcada como feita
             bool alreadyExists = _context.MealChecks.Any(x =>
@@ -39,9 +54,11 @@ namespace ALLmoco.Pages
 
             if (alreadyExists)
             {
+                ErrorMessage = "Essa refeição já foi registrada hoje.";
+
                 MealHistory = _context.MealChecks
-                .OrderByDescending(x => x.Date)
-                .ToList();
+                    .OrderByDescending(x => x.Date)
+                    .ToList();
 
                 CalculateStreak();
 
