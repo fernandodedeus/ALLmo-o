@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ALLmoço.Models;
+using ALLmoco.Models;
 
-namespace ALLmoço.Data
+namespace ALLmoco.Data
 {
     public class AppDbContext : DbContext
     {

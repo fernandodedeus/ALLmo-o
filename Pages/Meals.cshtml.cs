@@ -1,9 +1,9 @@
-using ALLmoço.Data;
-using ALLmoço.Models;
+using ALLmoco.Data;
+using ALLmoco.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ALLmoço.Pages
+namespace ALLmoco.Pages
 {
     public class MealsModel : PageModel
     {

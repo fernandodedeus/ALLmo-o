@@ -1,4 +1,4 @@
-﻿namespace ALLmoço.Models // Criação das tabelas em SQLite, por ser mais leve vai ser melhor pra mim
+﻿namespace ALLmoco.Models // Criação das tabelas em SQLite, por ser mais leve vai ser melhor pra mim
 {
     public class MealCheck
     {
