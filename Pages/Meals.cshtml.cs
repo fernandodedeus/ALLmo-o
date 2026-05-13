@@ -20,7 +20,7 @@ namespace ALLmoco.Pages
         public int CurrentStreak { get; set; } // int para a streak
         public string? ErrorMessage { get; set; } // string dentro da classe meal para criar a mensagem de erro no preenchimento de descricao
         // string? significa “essa variável pode ser nula”, necessário para esse caso que pode ou nao existir mensagem
-
+        public string StreakMessage { get; set; } = ""; // classe string para a streak
         public void OnGet()
         {
             MealHistory = _context.MealChecks // pega a tabela
@@ -28,6 +28,32 @@ namespace ALLmoco.Pages
                 .ToList(); // transforma em lista
 
             CalculateStreak(); // Contagem de Streak
+
+            // bloco de código para calcular se o tempo da streak for X, uma certa mensagem irá retornar
+            if (CurrentStreak == 0)
+            {
+                StreakMessage = "Você precisa se alimentar bem... faça uma refeição agora.";
+            }
+            else if (CurrentStreak >= 5 && CurrentStreak < 10)
+            {
+                StreakMessage = "MUUITO BEM!! VOCÊ MERECE UM PRÊMIO!";
+            }
+            else if (CurrentStreak >= 10 && CurrentStreak < 15)
+            {
+                StreakMessage = "Você está criando um hábito incrível!";
+            }
+            else if (CurrentStreak >= 15 && CurrentStreak < 20)
+            {
+                StreakMessage = "Seu corpo agradece cada refeição ❤️";
+            }
+            else if (CurrentStreak >= 20)
+            {
+                StreakMessage = "Você virou exemplo de consistência 😭🔥";
+            }
+            else
+            {
+                StreakMessage = "Continue assim! Cada refeição importa.";
+            }
         }
 
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
@@ -72,6 +98,29 @@ namespace ALLmoco.Pages
             return RedirectToPage();
 
             }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id) // método responsavel por criar o delete nos cards do histórico
+        {
+            var meal = await _context.MealChecks.FindAsync(id);
+
+            if (meal != null)
+            {
+                _context.MealChecks.Remove(meal);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAllAsync() // botão de limpar o historico geral
+        {
+            _context.MealChecks.RemoveRange(_context.MealChecks);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
 
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {

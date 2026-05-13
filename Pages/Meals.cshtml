@@ -12,15 +12,17 @@
     <div class="card custom-card mb-4">
 
         <div class="card-body text-center">
-
+            <!-- Streak contagem -->
             <h2 class="fw-bold mb-1">
                 🔥 @Model.CurrentStreak dias seguidos
             </h2>
+            <!-- Streak message, para mostrar as mensagens na tela -->
+            <p class="streak-message">
 
-            <p class="text-secondary mb-0">
-                Continue assim ❤️
-            </p>
+                @Model.StreakMessage
 
+            </p> 
+            <!-- removida a mensagem padrao que existia aqui antes, pois após o 0.2, o streakmessage assumiu esse papel -->
         </div>
 
     </div>
@@ -111,6 +113,16 @@
 
         @if (Model.MealHistory.Any())
         {
+            <form method="post" asp-page-handler="DeleteAll"> <!-- Botao de remover historico geral -->
+
+                <button class="btn btn-danger mb-4">
+
+                    Limpar histórico GERAL
+
+                </button>
+
+            </form>
+
             foreach (var meal in Model.MealHistory)
             {
                 <div class="card custom-card mb-3">
@@ -135,6 +147,19 @@
                                     Não feita
                                 </span>
                             }
+                            <!-- RESPONSAVEL PELO ICONE DA LIXEIRA -->
+                            <form method="post"
+                                  asp-page-handler="Delete"
+                                  asp-route-id="@meal.Id">
+
+                                <button type="submit"
+                                        class="delete-btn">
+
+                                    🗑️
+
+                                </button>
+
+                            </form>
 
                         </div>
 

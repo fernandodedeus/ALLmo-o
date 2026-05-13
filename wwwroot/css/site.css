@@ -224,3 +224,25 @@ body {
     text-align: center;
     font-weight: 500;
 }
+/* botao de deletar historico por card */
+.delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 1.1rem;
+    transition: 0.2s ease;
+}
+
+    .delete-btn:hover {
+        transform: scale(1.15);
+    }
+    /* personalização das mensagens da streak */
+.streak-message {
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
