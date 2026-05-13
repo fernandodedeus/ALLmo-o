@@ -58,9 +58,22 @@ namespace ALLmoco.Pages
 
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
         {
-            if (!MealCheck.AteMeal)
+            if (!MealCheck.AteMeal && !MealCheck.DidNotEat) // atualizada a função, dando a opção apenas de marcar a checkbox correta
             {
-                ErrorMessage = "Marque a refeição antes de salvar.";
+                ErrorMessage = "Marque uma das opções antes de salvar.";
+
+                MealHistory = _context.MealChecks
+                    .OrderByDescending(x => x.Date)
+                    .ToList();
+
+                CalculateStreak();
+
+                return Page();
+            }
+
+            if (MealCheck.AteMeal && MealCheck.DidNotEat)
+            {
+                ErrorMessage = "Selecione apenas uma opção.";
 
                 MealHistory = _context.MealChecks
                     .OrderByDescending(x => x.Date)

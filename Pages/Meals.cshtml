@@ -68,6 +68,7 @@
 
                 </div>
 
+                <!-- CHECKBOX FIZ ESSA REF -->
                 <div class="form-check mb-4">
 
                     <input class="form-check-input"
@@ -79,11 +80,23 @@
                     </label>
 
                 </div>
+                <!-- CHECKBOX NAO FIZ ESSA REF -->
+                <div class="form-check mb-3">
+
+                    <input class="form-check-input"
+                           type="checkbox"
+                           asp-for="MealCheck.DidNotEat" />
+
+                    <label class="form-check-label">
+                        Não fiz essa refeição
+                    </label>
+
+                </div>
 
                 <div class="mb-4">
 
                     <label class="form-label custom-label">
-                        O que você comeu?
+                        O que você comeu? ou se NÃO comeu, diga o motivo.
                     </label>
 
                     <textarea class="form-control custom-input"
@@ -134,14 +147,15 @@
                             <h5 class="fw-bold mb-0">
                                 🍽️ @meal.MealType
                             </h5>
-
+                            <!-- Icone de feita, caso for AteMeal, marcara com feita -->
                             @if (meal.AteMeal)
                             {
                                 <span class="badge bg-success">
                                     Feita
                                 </span>
                             }
-                            else
+                            <!-- Icone de nao feita, caso ocorra de marcar a checkbox didnoteat, nao feita será marcada -->
+                            @if (meal.DidNotEat)
                             {
                                 <span class="badge bg-danger">
                                     Não feita

@@ -8,7 +8,9 @@
 
         public bool AteMeal { get; set; } // Se retorna verdadeiro ou falso (checkbox)
 
-        public string Description { get; set; } = string.Empty; // Descrição ou observação da refeição
+        public bool DidNotEat { get; set; } // propriedade que adiciona a checkbox de falso
+
+        public string? Description { get; set; } // Descrição ou observação da refeição
 
         public DateTime Date { get; set; } // Data da refeição
     }
