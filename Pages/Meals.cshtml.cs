@@ -31,13 +31,20 @@ namespace ALLmoco.Pages
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
         {
             MealCheck.Date = DateTime.Now;
-                                                // metodo que verifica se existe refeição do tipo selecionado, se existir ele não vai salvar a refeição
-            bool alreadyExists = _context.MealChecks.Any(x => 
-                 x.MealType == MealCheck.MealType &&
-                 x.Date.Date == DateTime.Today);
+            // metodo que verifica se existe refeição do tipo selecionado, se existir ele não vai salvar a refeição, alem de que ele verifica se a ref foi marcada como feita
+            bool alreadyExists = _context.MealChecks.Any(x =>
+                x.MealType == MealCheck.MealType &&
+                x.Date.Date == DateTime.Today &&
+                x.AteMeal);
 
             if (alreadyExists)
             {
+                MealHistory = _context.MealChecks
+                .OrderByDescending(x => x.Date)
+                .ToList();
+
+                CalculateStreak();
+
                 return Page();
             }
 
