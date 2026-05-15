@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ALLmoco.Pages
 {
@@ -12,9 +13,15 @@ namespace ALLmoco.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            if(!User.Identity?.IsAuthenticated ?? true) // essa função verifica se tem usuário logado
+            {
+                return RedirectToPage("/Login"); // SE nao existir, retorna a pagina de login
+            }
+            return Page(); // se existir redireciona normalmente para index
         }
+
     }
 }
+

@@ -1,0 +1,84 @@
+﻿@page
+@model ALLmoco.Pages.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+
+    <div class="custom-card p-5"
+         style="width: 420px;">
+
+        <div class="text-center mb-4">
+
+            <h1 class="logo-text"
+                style="font-size: 2rem;">
+                ALLmoço
+            </h1>
+
+            <p class="hero-subtitle">
+                O SEU acompanhamento diário
+            </p>
+
+        </div>
+
+        <form method="post">
+
+            <div class="mb-4">
+
+                <label class="custom-label">
+                    Usuário
+                </label>
+
+                <input asp-for="Username"
+                       class="form-control custom-input"
+                       placeholder="Digite seu usuário" />
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="custom-label">
+                    Senha
+                </label>
+
+                <input asp-for="Password"
+                       type="password"
+                       class="form-control custom-input"
+                       placeholder="Digite sua senha" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn custom-button w-100">
+                Entrar
+            </button>
+
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="custom-alert mt-4">
+                @Model.Message
+            </div>
+        }
+
+        <div class="text-center mt-4">
+
+            <small class="text-secondary">
+
+                Não possui conta?
+
+                <a asp-page="/Register"
+                   class="text-decoration-none text-info">
+                    Cadastre-se
+                </a>
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>

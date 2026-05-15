@@ -2,9 +2,11 @@ using ALLmoco.Data;
 using ALLmoco.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ALLmoco.Pages
 {
+    [Authorize] // Essa função faz o ASPNET entender: "so usuarios authenticados entram aqui", isso é configurado la no options.LoginPath = "/Login";
     public class MealsModel : PageModel
     {
         private readonly AppDbContext _context;
@@ -86,9 +88,13 @@ namespace ALLmoco.Pages
 
             MealCheck.Date = DateTime.Now;
             // metodo que verifica se existe refeição do tipo selecionado, se existir ele não vai salvar a refeição, alem de que ele verifica se a ref foi marcada como feita
+            DateTime today = DateTime.Today;
+            DateTime tomorrow = today.AddDays(1);
+
             bool alreadyExists = _context.MealChecks.Any(x =>
                 x.MealType == MealCheck.MealType &&
-                x.Date.Date == DateTime.Today &&
+                x.Date >= today &&
+                x.Date < tomorrow &&
                 x.AteMeal);
 
             if (alreadyExists)
@@ -139,6 +145,7 @@ namespace ALLmoco.Pages
         {
             var dates = _context.MealChecks
                 .Where(x => x.AteMeal) // pega so refeições feitas
+                .ToList() // traz os dados primeiro
                 .GroupBy(x => x.Date.Date) // agrupa por dia
                 .Where(group => group.Count() >= 2) // filtra as refeições pra contar streak apenas com 2 refeições ou mais
                 .Select(group => group.Key) // pega apenas a data
