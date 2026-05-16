@@ -41,7 +41,8 @@ namespace ALLmoco.Pages
 
             var claims = new List<Claim> // Claim é uma informação do usuário, onde ele guarda na memoria esse login
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username), // ClaimTypes.Name é o nome do usuário, onde ele guarda o username do usuário logado
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) // ClaimTypes.NameIdentifier é o id do usuário, onde ele guarda o id do usuário logado, isso é importante para relacionar as refeições com o usuário
             };
 
             var identity = new ClaimsIdentity( // Claims indetity cria uma identidade autenticada

@@ -3,6 +3,7 @@ using ALLmoco.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ALLmoco.Pages
 {
@@ -25,9 +26,18 @@ namespace ALLmoco.Pages
         public string StreakMessage { get; set; } = ""; // classe string para a streak
         public void OnGet()
         {
+            // MealHistory = _context.MealChecks // pega a tabela
+            //  .OrderByDescending(x => x.Date) // ordena do mais recente pro mais antigo '=>'
+            //  .ToList(); // transforma em lista
+
+            var userId = int.Parse( // pega o id do usuário logado, para relacionar a refeição com o usuário, isso é possível por causa do ClaimTypes.NameIdentifier que foi criado la no Login.cshtml.cs
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value); // pega o id do usuário logado, para relacionar a refeição com o usuário, isso é possível por causa do ClaimTypes.NameIdentifier que foi criado la no Login.cshtml.cs
+
             MealHistory = _context.MealChecks // pega a tabela
+                .Where(x => x.UserId == userId) // filtra as refeições do usuário logado
                 .OrderByDescending(x => x.Date) // ordena do mais recente pro mais antigo '=>'
                 .ToList(); // transforma em lista
+
 
             CalculateStreak(); // Contagem de Streak
 
@@ -86,12 +96,17 @@ namespace ALLmoco.Pages
                 return Page();
             }
 
-            MealCheck.Date = DateTime.Now;
+            MealCheck.Date = DateTime.UtcNow;
             // metodo que verifica se existe refeição do tipo selecionado, se existir ele não vai salvar a refeição, alem de que ele verifica se a ref foi marcada como feita
-            DateTime today = DateTime.Today;
+            DateTime today = DateTime.UtcNow.Date;
             DateTime tomorrow = today.AddDays(1);
 
+            var userId = int.Parse( // pega o id do usuário logado, para relacionar a refeição com o usuário, isso é possível por causa do ClaimTypes.NameIdentifier que foi criado la no Login.cshtml.cs
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            // LINQ para verificar se já existe uma refeição do mesmo tipo feita hoje, para evitar que o usuário registre a mesma refeição mais de uma vez no mesmo dia
             bool alreadyExists = _context.MealChecks.Any(x =>
+                x.UserId == userId &&
                 x.MealType == MealCheck.MealType &&
                 x.Date >= today &&
                 x.Date < tomorrow &&
@@ -109,6 +124,8 @@ namespace ALLmoco.Pages
 
                 return Page();
             }
+            // Atribui o UserId do MealCheck com o id do usuário logado, para relacionar a refeição com o usuário
+            MealCheck.UserId = userId;
 
             _context.MealChecks.Add(MealCheck); // adiciona no banco
 
@@ -143,8 +160,12 @@ namespace ALLmoco.Pages
 
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {
+            // LINQ para calcular a streak, ele pega as refeições feitas, agrupa por dia, filtra os dias que tem 2 ou mais refeições feitas, ordena por data decrescente e depois conta quantos dias consecutivos tem a partir de hoje
+            var userId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
             var dates = _context.MealChecks
-                .Where(x => x.AteMeal) // pega so refeições feitas
+                .Where(x => x.AteMeal && x.UserId == userId) // pega so refeições feitas por usuário logado, para contar a streak apenas com as refeições do usuário logado
                 .ToList() // traz os dados primeiro
                 .GroupBy(x => x.Date.Date) // agrupa por dia
                 .Where(group => group.Count() >= 2) // filtra as refeições pra contar streak apenas com 2 refeições ou mais
