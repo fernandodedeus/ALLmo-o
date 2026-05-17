@@ -142,38 +142,53 @@
 
                     <div class="card-body">
 
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
 
-                            <h5 class="fw-bold mb-0">
-                                🍽️ @meal.MealType
-                            </h5>
-                            <!-- Icone de feita, caso for AteMeal, marcara com feita -->
-                            @if (meal.AteMeal)
-                            {
-                                <span class="badge bg-success">
-                                    Feita
-                                </span>
-                            }
-                            <!-- Icone de nao feita, caso ocorra de marcar a checkbox didnoteat, nao feita será marcada -->
-                            @if (meal.DidNotEat)
-                            {
-                                <span class="badge bg-danger">
-                                    Não feita
-                                </span>
-                            }
-                            <!-- RESPONSAVEL PELO ICONE DA LIXEIRA -->
-                            <form method="post"
-                                  asp-page-handler="Delete"
-                                  asp-route-id="@meal.Id">
+                            <!-- Nome da refeição -->
+                            <div style="width: 220px;">
 
-                                <button type="submit"
-                                        class="delete-btn">
+                                <h5 class="fw-bold mb-0">
+                                    🍽️ @meal.MealType
+                                </h5>
 
-                                    🗑️
+                            </div>
 
-                                </button>
+                            <!-- Status -->
+                            <div style="width: 120px;">
 
-                            </form>
+                                @if (meal.AteMeal)
+                                {
+                                    <span class="badge bg-success">
+                                        Feita
+                                    </span>
+                                }
+
+                                @if (meal.DidNotEat)
+                                {
+                                    <span class="badge bg-danger">
+                                        Não feita
+                                    </span>
+                                }
+
+                            </div>
+
+                            <!-- Botão delete -->
+                            <div class="ms-auto">
+
+                                <form method="post"
+                                      asp-page-handler="Delete"
+                                      asp-route-id="@meal.Id">
+
+                                    <button type="submit"
+                                            class="delete-btn">
+
+                                        🗑️
+
+                                    </button>
+
+                                </form>
+
+                            </div>
 
                         </div>
 

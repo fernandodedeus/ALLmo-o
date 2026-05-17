@@ -224,6 +224,16 @@ body {
     text-align: center;
     font-weight: 500;
 }
+/* estilizar mensagem de sucesso */
+.custom-success-alert {
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    font-weight: 500;
+}
 /* botao de deletar historico por card */
 .delete-btn {
     position: absolute;

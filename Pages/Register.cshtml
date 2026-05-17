@@ -1,0 +1,88 @@
+﻿@page
+@model ALLmoco.Pages.RegisterModel
+
+@{
+    ViewData["Title"] = "Cadastro";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+
+    <div class="custom-card p-5"
+         style="width: 420px; position: relative;">
+
+        <!-- Botão voltar -->
+        <a asp-page="/Login"
+           class="text-decoration-none text-secondary"
+           style="
+                position: absolute;
+                top: 20px;
+                left: 25px;
+                font-size: 1.4rem;">
+            ←
+        </a>
+
+        <div class="text-center mb-4">
+
+            <h1 class="logo-text"
+                style="font-size: 2rem;">
+                ALLmoço
+            </h1>
+
+            <p class="hero-subtitle">
+                Crie sua conta
+            </p>
+
+        </div>
+
+        <form method="post">
+
+            <div class="mb-4">
+
+                <label class="custom-label">
+                    Criar Usuário
+                </label>
+                <!-- a função asp-for liga o html até a propriedade do c# -->
+
+                <input asp-for="Username" 
+                       class="form-control custom-input"
+                       placeholder="Escolha um usuário" />
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="custom-label">
+                    Criar senha
+                </label>
+
+                <input asp-for="Password"
+                       type="password"
+                       class="form-control custom-input"
+                       placeholder="Crie uma senha" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn custom-button w-100">
+                Criar conta
+            </button>
+
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="custom-alert mt-4">
+                @Model.ErrorMessage
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="custom-success-alert mt-4">
+                @Model.SuccessMessage
+            </div>
+        }
+
+    </div>
+
+</div>

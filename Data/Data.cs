@@ -10,6 +10,7 @@ namespace ALLmoco.Data
         {
         }
 
-        public DbSet<MealCheck> MealChecks { get; set; }
+        public DbSet<MealCheck> MealChecks { get; set; } // identifica a tabela meal checks
+        public DbSet<User> Users { get; set; } // identifica a tabela users
     }
 }
